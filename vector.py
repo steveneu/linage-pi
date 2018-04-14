@@ -49,7 +49,7 @@ class Vector(object):
 
     def normalized(self):
         try:
-            magnitude = self.magnitude();
+            magnitude = self.magnitude()
             return self.times_scalar(Decimal('1.0')/magnitude)
 
         except ZeroDivisionError:
@@ -92,7 +92,7 @@ class Vector(object):
             #arg = numerator/denominator
             #result = acos(arg)
         except ZeroDivisionError:
-            raise Exception(self.ATTEMPTED_ZERO_DIVIDE + ' in angle_rads()')
+            raise Exception(Vector.ATTEMPTED_ZERO_DIVIDE + ' in angle_rads()')
         return result
     
     @staticmethod
@@ -101,7 +101,7 @@ class Vector(object):
         return result * 180/pi # convert to degrees and return
 
     @staticmethod
-    def orthagonal(first, second):
+    def orthagonal(first, second, tolerance=1e-10):
         result = False
         if first.zero() or second.zero():
             result = True
@@ -122,7 +122,7 @@ class Vector(object):
 
     # projection functions
     @staticmethod 
-    def v_parallel(v, b): # return the (2D?) projection of v onto b a.k.a. v"
+    def v_parallel(self, v, b): # return the (2D?) projection of v onto b a.k.a. v"
         try:
             b_normalized = b.normalized()
             u = Vector.dot(v, b_normalized)
@@ -134,7 +134,7 @@ class Vector(object):
                 raise e
 
     @staticmethod
-    def v_perp(v, b): # return the vector orthagonal to v" 
+    def v_perp(self, v, b): # return the vector orthagonal to v"
         try:
             vee = v
             return vee.minus(Vector.v_parallel(v, b))
@@ -173,88 +173,5 @@ class Vector(object):
     def __eq__(self, v):
         return self.coordinates == v.coordinates
 
-def main():
-    # test for lesson 2 #10
-    #vone = Vector(['-7.579', '-7.88'])
-    #vtwo = Vector(['-2.029', '9.97', '4.172'])
-    #vthree = Vector(['-2.328', '-7.284', '-1.214'])
-    #vfour = Vector(['2.118', '4.827'])
 
-    #wone = Vector(['22.737', '23.64'])
-    #wtwo = Vector(['-9.231', '-6.639', '-7.245'])
-    #wthree = Vector(['-1.821', '1.072', '-2.94'])
-    #wfour = Vector(['0','0'])
-
-    #onep = Vector.parallel(vone, wone)
-    #oneo = Vector.orthagonal(vone, wone)
-
-    #twop = Vector.parallel(vtwo, wtwo)
-    #twoo = Vector.orthagonal(vtwo, wtwo)
-
-    #threep = Vector.parallel(vthree, wthree)
-    #threeo = Vector.orthagonal(vthree, wthree)    
-
-    #fourp = Vector.parallel(vfour, wfour)
-    #fouro = Vector.orthagonal(vfour, wfour)
-
-    ## lesson 2 #12, projections
-    #vone = Vector(['3.039', '1.879']);
-    #bone = Vector(['0.825', '2.036']);
-
-    #vtwo = Vector(['-9.88', '-3.264', '-8.159']);
-    #btwo = Vector(['-2.155', '-9.353', '-9.473']);
-
-    #vthree = Vector(['3.009', '-6.172', '3.692', '-2.51']);
-    #bthree = Vector(['6.404', '-9.144', '2.759', '8.718']);
-
-    #result1 = Vector.v_parallel(vone, bone);
-    #result2 = Vector.v_perp(vtwo, btwo);
-    
-    #result3perp = Vector.v_parallel(vthree, bthree)
-    #result3parallel = Vector.v_perp(vthree, bthree)
-
-    #print(result1)
-    #print(result2)
-    #print(result3perp)
-    #print(result3parallel)
-
-    # lesson #2, Quiz: coding cross products
-    print ("#0, v cross w") # debug print template
-    v = Vector(['1.0', '0.0', '0.0'])
-    w = Vector(['0.0', '1.0', '0.0'])
-    Vector.cross(v,w).print()
-
-    print ("#1, v cross w") # debug print template
-    v = Vector(['8.462', '7.893', '-8.187'])
-    w = Vector(['6.984', '-5.975', '4.778'])
-    Vector.cross(v,w).print()
-
-    print ("#2 area of parallellogram spanned by v & w") # debug print template
-    v = Vector(['-8.987', '-9.838', '5.031'])
-    w = Vector(['-4.268', '-1.861', '-8.866'])
-    print (Vector.cross(v,w).magnitude())
-
-    print ("#3 area of triangle spanned by v & w") # debug print template
-    v = Vector(['1.5', '9.547', '3.691'])
-    w = Vector(['-6.007', '0.124', '5.772'])
-    print (Decimal(0.5) * Vector.cross(v,w).magnitude())
-
-main()
-
-    # lesson 2, #8
-    #onev = Vector([7.887, 4.138])
-    #onew = Vector([-8.802, 6.776])
-    #print(Vector.dot(onev, onew))
-
-    #twov = Vector([-5.955, -4.904, -1.874])
-    #twow = Vector([-4.496, -8.755, 7.103])
-    #print(Vector.dot(twov, twow))
-    
-    #threev = Vector([3.183, -7.627])
-    #threew = Vector([-2.668, 5.319])
-    #print(Vector.angle_rads(threev, threew))
-
-    #fourv = Vector([7.35, 0.221, 5.188])
-    #fourw = Vector([2.751, 8.259, 3.985])
-    #print(Vector.angle_degrees(fourv, fourw))
     
