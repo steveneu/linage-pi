@@ -28,6 +28,51 @@ class Line(object):
     #     y0 = ell.basepoint
     #     basepoint_difference = x0.minus
 
+    def __eq__(self, ell):
+
+        if self.normal_vector.is_zero():
+            if not ell.normal_vector.is_zero():
+                return False
+            else:
+                diff = self.constant_term - ell.constant_term
+                return MyDecimal(diff).is_near_zero()
+        elif ell.normal_vector.is_zero():
+            return False
+
+        if not self.is_parallel_to(ell):
+            return False
+        x0=self.basepoint
+        y0=ell.basepoint
+        basepoint_difference = x0.minus(y0)
+
+        n = self.normal_vector
+        return basepoint_difference.is_orthogonal_to(n)
+
+    def is_parallel_to(self, ell):
+        n1 = self.normal_vector
+        n2 = ell.normal_vector
+
+        return n1.is_parallel_to(n2)
+
+    def intersection_with(self, ell):
+        try:
+            A, B = self.normal_vector.coordinates
+            C, D = ell.normal_vector.coordinates
+            k1 = self.constant_term
+            k2 = ell.constant_term
+
+            x_numerator = D*k1 - B*k2
+            y_numerator = -C*k1 + A*k2
+            one_over_denom = Decimal('1')/(A*D - B*C)
+
+            return Vector([x_numerator, y_numerator]).times_scalar(one_over_denom)
+
+        except ZeroDivisionError:
+            if self==ell:
+                return self
+            else:
+                return None
+
     def set_basepoint(self):
         try:
             n = self.normal_vector
@@ -166,18 +211,21 @@ def printLineInfo(one, two):
     print(message)
 
 def main():
+    print("hello")
+    # lesson 3, #7 - coding functions for planes
+
     # lesson 3, #4 - coding functions for lines
-    A_one = Line([4.046, 2.836], 1.21)
-    A_two = Line([10.115, 7.09], 3.025)
-    printLineInfo(A_one, A_two)
-
-    B_one = Line([7.204, 3.182], 8.68)
-    B_two = Line([8.172, 4.114], 9.883)
-    printLineInfo(B_one, B_two)
-
-    C_one = Line([1.182, 5.562], 6.744)
-    C_two = Line([1.773, 8.343], 9.525)
-    printLineInfo(C_one, C_two)
+    # A_one = Line([4.046, 2.836], 1.21)
+    # A_two = Line([10.115, 7.09], 3.025)
+    # printLineInfo(A_one, A_two)
+    #
+    # B_one = Line([7.204, 3.182], 8.68)
+    # B_two = Line([8.172, 4.114], 9.883)
+    # printLineInfo(B_one, B_two)
+    #
+    # C_one = Line([1.182, 5.562], 6.744)
+    # C_two = Line([1.773, 8.343], 9.525)
+    # printLineInfo(C_one, C_two)
 
     # test for lesson 2 #10
     #vone = Vector(['-7.579', '-7.88'])
